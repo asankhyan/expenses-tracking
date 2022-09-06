@@ -8,8 +8,9 @@ import { getUserEmail } from "./user.reducer";
 export const expenseSlice = createSlice({
     name: "Expenses",
     initialState:()=>{
-        const minDate = new Date();
+        let minDate = new Date();
         minDate.setDate(1);
+        minDate = setHours(setMinutes(setSeconds(minDate, 0), 0), 0);
         const maxDate = setHours(setMinutes(setSeconds(new Date(), 59), 59), 23);
         return {range: {minDate: minDate, maxDate:maxDate}, list: []};
     },
