@@ -60,7 +60,7 @@ function ExpensesList(){
                     );
                 })
                 }</>
-                : <span>No Expenses entered yet. Start monitoring your expenses.</span>
+                : <span>No Expenses entered yet for this period.</span>
                 }
             </Card.Body>
         </Card>
