@@ -63,6 +63,44 @@ export const getExpensesListAsync= (dispatch, getState)=>{
 export const {addExpense, setExpenses} = expenseSlice.actions;
 export default expenseSlice.reducer;
 export const selectExpenses = (state)=>state.expenses.list;
+
+
+export const oneRecordPerDateSelectorForReport = (state)=>{
+    let expenses = state.expenses.list;
+    expenses = expenses.reduce((prevValue, _item)=>{
+        let item = {..._item};
+        let currentItem = prevValue[item.date];
+        if(!currentItem){
+            prevValue[item.date] = currentItem = item;
+            let _t = currentItem["sub_expenses"];
+            if(!currentItem["sub_expenses"]){
+                currentItem["sub_expenses"] = _t = {};
+            }
+            const tagsStr = item.tags.join(", ");
+            if(!_t[tagsStr]){
+                _t[tagsStr] = item.amount;
+            }else{
+                _t[tagsStr] += item.amount;
+            }
+        }else{
+            const tagsStr = item.tags.join(", ");
+            let _t = currentItem["sub_expenses"];
+            if(!_t[tagsStr]){
+                _t[tagsStr] = item.amount;
+            }else{
+                _t[tagsStr] += item.amount;
+            }
+            currentItem.amount+=item.amount;
+        }
+        return prevValue;
+    }, {});
+    const expensesList = [];
+    for(var key in expenses){
+        expensesList.push(expenses[key]);
+    }
+    return expensesList;
+}
+
 export const expensesSelectorForReport = (state)=>{
     return state.expenses.list;
 }
