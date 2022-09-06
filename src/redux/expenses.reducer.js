@@ -61,7 +61,11 @@ export const getExpensesListAsync= (dispatch, getState)=>{
     
     const range = expensesRange(getState());
 
-    let forCurrentMonth = query(allDocsQuery, where("date", ">", range.minDate), where("date", "<", range.maxDate));
+    
+    const minDate = setHours(setMinutes(setSeconds(range.minDate, 0), 0), 0);
+    const maxDate = setHours(setMinutes(setSeconds(range.maxDate, 59), 59), 23);
+
+    let forCurrentMonth = query(allDocsQuery, where("date", ">", minDate), where("date", "<", maxDate));
     getDocs(forCurrentMonth).then(result=>{
         let docArray = [];
         result.docs.map(doc=>{

@@ -1,15 +1,21 @@
-import { Button, Image } from "react-bootstrap";
+import { Button, Col, Image, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import styledComponent from "styled-components";
 import { userSelector } from "../../redux/user.reducer";
 import {auth, signInWithGoogle} from '../../utils/firebase.utils'
-import Logo from '../../assets/images/logo.png';
+import Logo from '../../assets/images/AppImg.png';
 
 export default function Header(){
     return(
         <Container>
-            <Image src={Logo} height={"90px"}/>
-            <UserMenu/>
+            <Row style={{width: "100%"}}>
+                <Col>
+                    <Image src={Logo} height={"120px"}/>
+                </Col>
+                <Col>
+                    <UserMenu/>
+                </Col>
+            </Row>
         </Container>
     );
 }
@@ -17,9 +23,9 @@ export default function Header(){
 function UserMenu(){
     const user = useSelector(userSelector);
     return(
-        <div>
+        <div style={{float: "right"}}>
             <span style={{marginRight:"10px"}}>Welcome, {user.name}</span>
-            {/* <Image src={user.profilePic} rounded/> */}
+            <Image src={user.photoUrl} style={{borderRadius: "50px", margin: "0px 20px"}}/>
             {
                 user
                 ? <Button variant="outline-primary" onClick={()=>auth.signOut()}>Sign Out</Button>

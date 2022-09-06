@@ -1,38 +1,59 @@
 import Datepicker from "../form-fields/datepicker.component";
-import { expensesRange, setExpensesRange} from "../../redux/expenses.reducer";
+import { expensesRange, getExpensesListAsync, setExpensesRange} from "../../redux/expenses.reducer";
 import { useDispatch, useSelector } from "react-redux";
+import { Col, Row } from "react-bootstrap";
+import FormButton from "../form-fields/button.component";
+import { useState } from "react";
 
 export default function ExpensesFilter(){
-    let dispatch = useDispatch();
-    const setStartDate = (startDate)=>{
-        if(startDate) 
-            dispatch(setExpensesRange({minDate: startDate}));
-    }
-    const setEndDate = (endDate)=>{
-        if(endDate) 
-            dispatch(setExpensesRange({maxDate: endDate}));
-    }
     const range = useSelector(expensesRange);
-    const startDate = range.minDate;
-    const endDate = range.maxDate;
+    // const startDate = ;
+    // const endDate = range.maxDate;
+    let dispatch = useDispatch();
+    const [startDate, setStartDate] = useState(range.minDate);
+    const [endDate, setEndDate] = useState(range.maxDate);
+    // const setStartDate = (startDate)=>{
+    //     if(startDate) 
+    //         
+    // }
+    // const setEndDate = (endDate)=>{
+    //     if(endDate) 
+    //         dispatch(setExpensesRange({maxDate: endDate}));
+    // }
+    const applyFilter = ()=>{
+        dispatch(setExpensesRange({minDate: startDate, maxDate: endDate}));
+        dispatch(getExpensesListAsync);
+    };
     return(
         <div>
-            <small style={{color:"red"}}>**** Filters will be available in future verisons. ****</small>
-            <Datepicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
-            />
-            <Datepicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-            />
+            <Row>
+                <Col className="md-3">
+                    <div>
+                        <label>From: </label>
+                        <Datepicker
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            selectsStart
+                            startDate={startDate}
+                            endDate={endDate}
+                        />
+                    </div>
+                </Col>
+                <Col>
+                    <label>To: </label>
+                    <Datepicker
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        selectsEnd
+                        startDate={startDate}
+                        endDate={endDate}
+                        minDate={startDate}
+                    />
+                </Col>
+                <Col style={{margin:"auto"}}>
+                    <FormButton onClick={applyFilter}>Apply Filter</FormButton>
+                </Col>
+            </Row>
         </div>
     );
 }

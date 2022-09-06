@@ -10,8 +10,8 @@ export default function Tags({tags, tagOnClick}){
     );
 }
 
-function Tag({text, onClick}){
+export const Tag = ({text, onClick})=>{
     return(
-        <span onClick={onClick} style={{margin: "5px", backgroundColor: "#e1ddddab", padding: "5px 5px", cursor: "pointer"}}>{text}</span>
+        <span onClick={onClick} style={{margin: "5px", backgroundColor: "#e1ddddab", padding: "5px 5px", cursor: "pointer"}}>#{text}</span>
     );
 }

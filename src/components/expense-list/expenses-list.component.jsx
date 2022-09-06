@@ -26,11 +26,13 @@ function ExpensesList(){
                     <strong> INR {totalExpenses}</strong>
                 </small>
             </Card.Header>
+            <Card.Header>
+                <ExpensesFilter/>
+            </Card.Header>
             <Card.Body style={{maxHeight: "450px", overflow: "auto"}}>
                 {
                 expensesList && expensesList.length>0
                 ?<>
-                <ExpensesFilter/>
                 {
                 expensesList.map((item, inx)=>{
                     return(
