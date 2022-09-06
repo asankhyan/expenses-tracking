@@ -23,6 +23,17 @@ export const expenseSlice = createSlice({
         },
         setExpenses:(state, action)=>{
             return {...state, list: action.payload};
+        },
+        setExpensesRange: (state, action)=>{
+            let minDate = action.payload.minDate;
+            let maxDate = action.payload.maxDate;
+            if(!minDate){
+                minDate = state.range.minDate;
+            }
+            if(!maxDate){
+                maxDate = state.range.maxDate;
+            }
+            return {...state, range: {minDate: minDate, maxDate: maxDate}};
         }
     }
 });
@@ -61,7 +72,7 @@ export const getExpensesListAsync= (dispatch, getState)=>{
     }).catch(error=>console.log(error));
 }
 
-export const {addExpense, setExpenses} = expenseSlice.actions;
+export const {addExpense, setExpenses, setExpensesRange} = expenseSlice.actions;
 export default expenseSlice.reducer;
 export const selectExpenses = (state)=>state.expenses.list;
 
