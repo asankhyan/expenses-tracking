@@ -6,6 +6,7 @@ import { userSelector } from "../../redux/user.reducer";
 import { formatDate_ddMMyyyy } from "../../utils/date.utils";
 import Tags from "../tags/tags.component";
 import ExpensesFilter from "./expenses-filter.component";
+import {AiOutlineEdit, AiOutlineDelete} from 'react-icons/ai'
 
 function ExpensesList(){
     const expensesList = useSelector(selectExpenses);
@@ -40,6 +41,19 @@ function ExpensesList(){
                             <Toast.Header closeButton={false}>
                                 <strong className="me-auto"><small>INR</small> {item.amount}</strong>
                                 <small>{item.date}</small>
+                                <div style={{
+                                    padding: "3px 10px",
+                                    width: "64px",
+                                    background: "#efefef",
+                                    margin: "0 10px",
+                                    display: "flex",
+                                    color: "#414148",
+                                    justifyContent: "space-between",
+                                    borderRadius: "5px"
+                                }}>
+                                    <AiOutlineEdit style={{cursor: "pointer"}} onClick={()=>{console.log("edit clicked")}}/>
+                                    <AiOutlineDelete style={{cursor: "pointer"}} onClick={()=>{console.log("delete clicked")}}/>
+                                </div>
                             </Toast.Header>
                             <Toast.Body>
                                 <span>{item.remarks}</span>

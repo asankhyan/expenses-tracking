@@ -3,6 +3,7 @@ import { parseISO, setHours, setMinutes, setSeconds } from "date-fns";
 import { addDoc, collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { formatDate_ddMMyyyy } from "../utils/date.utils";
 import { fireStore } from "../utils/firebase.utils";
+import { showNotification } from "./notification.reducer";
 import { getUserEmail } from "./user.reducer";
 
 export const expenseSlice = createSlice({
@@ -45,12 +46,18 @@ function getExpensesCollection(state){
 
 export const addExpenseAsync = (expense)=>{
     return (dispatch, getState)=>{
-        let newDate = parseISO(expense.date);
-        const expensesCollectionPath = getExpensesCollection(getState());
-        let usrExpensesRef = collection(fireStore, expensesCollectionPath);
-        addDoc(usrExpensesRef, {...expense, date: newDate});
-
-        dispatch(addExpense({...expense, date: formatDate_ddMMyyyy(newDate)}));
+        let msg = ""
+        try{
+            let newDate = parseISO(expense.date);
+            const expensesCollectionPath = getExpensesCollection(getState());
+            let usrExpensesRef = collection(fireStore, expensesCollectionPath);
+            addDoc(usrExpensesRef, {...expense, date: newDate});
+            dispatch(addExpense({...expense, date: formatDate_ddMMyyyy(newDate)}));
+            msg="Expense added successfully.";
+        }catch(err){
+            msg="unable to add expense.";
+        }
+        dispatch(showNotification(msg));
     }
 }
 

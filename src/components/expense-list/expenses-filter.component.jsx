@@ -36,6 +36,7 @@ export default function ExpensesFilter(){
                             selectsStart
                             startDate={startDate}
                             endDate={endDate}
+                            maxDate={endDate}
                         />
                     </div>
                 </Col>

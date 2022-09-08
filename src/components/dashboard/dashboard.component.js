@@ -10,6 +10,7 @@ import Logo from '../../assets/images/AppImg.png';
 import { auth, signInWithGoogle } from '../../utils/firebase.utils';
 import { useEffect } from 'react';
 import ExpensesReport from '../expenses-report/expenses-report.component';
+
 const Container = styled.div`
 width: 95%;
 margin: auto;

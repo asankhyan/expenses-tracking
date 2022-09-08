@@ -7,6 +7,7 @@ import MultiValueText from "../form-fields/multi-value-text.component";
 import { addExpenseAsync } from '../../redux/expenses.reducer'
 import { formatDateISO } from "../../utils/date.utils";
 import { Card, Form } from "react-bootstrap";
+import { showNotificationAsync } from "../../redux/notification.reducer";
 
 export default function AddExpense(){
     const expenseDefaults = {date: new Date(), amount:"", remarks:"", tags:[]};
@@ -32,20 +33,20 @@ export default function AddExpense(){
         let _expense = {...expense};
         //validating all the information
         if(!_expense.date){
-            alert("Please choose date.");
+            dispatch(showNotificationAsync("Please choose date."));
             return false;
         }else{
             _expense.date = formatDateISO(_expense.date);
         }
         let amount = parseFloat(_expense.amount);
         if(isNaN(amount) || amount<=0){
-            alert("Amount should be greater than 0.");
+            dispatch(showNotificationAsync("Amount should be greater than 0."));
             return false;
         }else{
             _expense.amount=amount;
         }
         if(_expense.remarks.length===0){
-            alert("Please enter remarks for expense.");
+            dispatch(showNotificationAsync("Please enter remarks for expense."));
             return false;
         }
         //dispatching save action

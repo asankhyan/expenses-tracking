@@ -4,6 +4,7 @@ import styledComponent from "styled-components";
 import { userSelector } from "../../redux/user.reducer";
 import {auth, signInWithGoogle} from '../../utils/firebase.utils'
 import Logo from '../../assets/images/AppImg.png';
+import Notification from "../notification/notification.component";
 
 export default function Header(){
     return(
@@ -16,6 +17,7 @@ export default function Header(){
                     <UserMenu/>
                 </Col>
             </Row>
+            <Notification/>
         </Container>
     );
 }
@@ -25,7 +27,7 @@ function UserMenu(){
     return(
         <div style={{float: "right"}}>
             <span style={{marginRight:"10px"}}>Welcome, {user.name}</span>
-            <Image src={user.photoUrl} style={{borderRadius: "50px", margin: "0px 20px"}}/>
+            <Image src={user.photoUrl} style={{height:"50px", borderRadius: "50px", margin: "0px 10px"}}/>
             {
                 user
                 ? <Button variant="outline-primary" onClick={()=>auth.signOut()}>Sign Out</Button>
