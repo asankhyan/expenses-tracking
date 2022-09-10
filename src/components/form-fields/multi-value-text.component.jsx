@@ -5,21 +5,22 @@ import Tags from "../tags/tags.component";
 function MultiValueText(props){
     const [tag, setTag] = useState("");
     const {value, label, onChange} = props;
+    const _value = [...value];
     let updateTag = (evt)=>{
-        const value = evt.target.value;
-        setTag(value);
+        const _tag = evt.target.value;
+        setTag(_tag);
     }
     let addItemToList = ()=>{
-        if(tag && tag.length>0 && value.indexOf(tag) < 0){
-            value.splice(0, 0, tag);
-            onChange(value);
+        if(tag && tag.length>0 && _value.indexOf(tag) < 0){
+            _value.splice(0, 0, tag);
+            onChange(_value);
         }
         setTag("");
     };
     const removeTag = (inx)=>{
-        if(value && value.length>0){
-            value.splice(inx, 1);
-            onChange(value);
+        if(_value && _value.length>0){
+            _value.splice(inx, 1);
+            onChange(_value);
         }
     }
     const newProps = {...props, onChange: updateTag, value: tag};
@@ -35,7 +36,7 @@ function MultiValueText(props){
                 <span className="danger">Add tags to easily find this expense later. You can click on a tag to remove them.</span>
             </Form.Text>
             <div style={{margin: "10px 0px"}}>
-                <Tags tags={value} tagOnClick={(inx)=>{removeTag(inx)}}/>
+                <Tags tags={_value} tagOnClick={(inx)=>{removeTag(inx)}}/>
             </div>
         </Form.Group>
     );

@@ -6,10 +6,10 @@ import Header from '../header/header.component';
 import Summary from '../summary/summary.component';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { setUserInfo, userSelector } from '../../redux/user.reducer';
-import Logo from '../../assets/images/AppImg.png';
 import { auth, signInWithGoogle } from '../../utils/firebase.utils';
 import { useEffect } from 'react';
 import ExpensesReport from '../expenses-report/expenses-report.component';
+import { APP_IMG } from '../../utils/app.constants';
 
 const Container = styled.div`
 width: 95%;
@@ -48,19 +48,19 @@ function UserContent(){
                     <AddExpense/>
                 </Col>
                 <Col>
-                    <ExpensesList as={Col}/>
+                    <ExpensesReport/>
                 </Col>
                 </Row>
                 <hr/>
-                <Row style={{display: "flex", justifyContent: "space-around"}}>
-                    <ExpensesReport/>
+                <Row style={{display: "flex", justifyContent: "space-around", width:"95%", margin:"auto"}}>
+                    <ExpensesList as={Col}/>
                 </Row>
             </Container>
         );
     } else{
         return(
             <Card style={{width:"100%", maxWidth: "500px", margin:"50px auto"}}>
-                <Card.Img variant="top" src={Logo}/>
+                <Card.Img variant="top" src={APP_IMG}/>
                 <Card.Body style={{textAlign: "center"}}>
                     <Button onClick={signInWithGoogle}>Sign In with Google</Button>
                 </Card.Body>
@@ -68,4 +68,3 @@ function UserContent(){
         );
     }
   }
-  

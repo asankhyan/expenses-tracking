@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { Card, Toast } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { expensesRange, getExpensesListAsync, selectExpenses, totalExpense } from "../../redux/expenses.reducer";
+import { editExpenseAsync, expensesRange, getExpensesListAsync, selectExpenses, totalExpense } from "../../redux/expenses.reducer";
 import { userSelector } from "../../redux/user.reducer";
 import { formatDate_ddMMyyyy } from "../../utils/date.utils";
 import Tags from "../tags/tags.component";
 import ExpensesFilter from "./expenses-filter.component";
 import {AiOutlineEdit, AiOutlineDelete} from 'react-icons/ai'
 
-function ExpensesList(){
+export default function ExpensesList(){
     const expensesList = useSelector(selectExpenses);
     const user = useSelector(userSelector);
     const totalExpenses = useSelector(totalExpense);
@@ -37,10 +37,16 @@ function ExpensesList(){
                 {
                 expensesList.map((item, inx)=>{
                     return(
-                        <Toast key={inx} style={{width: "100%", marginBottom: "10px"}}>
+                        <Toast key={item.id} style={{width: "100%", marginBottom: "10px"}}>
                             <Toast.Header closeButton={false}>
                                 <strong className="me-auto"><small>INR</small> {item.amount}</strong>
-                                <small>{item.date}</small>
+                                <small><strong>Expense Date:</strong> {item.date}</small>
+                                {
+                                    item.lastUpdatedOn
+                                    ? <small style={{margin: "0 10px"}}><strong>Last Updated:</strong> {item.lastUpdatedOn}</small>
+                                    : null
+                                }
+                                
                                 <div style={{
                                     padding: "3px 10px",
                                     width: "64px",
@@ -51,8 +57,8 @@ function ExpensesList(){
                                     justifyContent: "space-between",
                                     borderRadius: "5px"
                                 }}>
-                                    <AiOutlineEdit style={{cursor: "pointer"}} onClick={()=>{console.log("edit clicked")}}/>
-                                    <AiOutlineDelete style={{cursor: "pointer"}} onClick={()=>{console.log("delete clicked")}}/>
+                                    <AiOutlineEdit style={{cursor: "pointer"}} onClick={()=>{dispatch(editExpenseAsync(item.id))}}/>
+                                    <AiOutlineDelete style={{cursor: "pointer"}} onClick={()=>{console.log("delete clicked", item.id)}}/>
                                 </div>
                             </Toast.Header>
                             <Toast.Body>
@@ -80,6 +86,3 @@ function ExpensesList(){
         </Card>
     );
 }
-
-
-export default ExpensesList;

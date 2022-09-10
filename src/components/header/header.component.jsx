@@ -2,8 +2,8 @@ import { Button, Col, Image, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import styledComponent from "styled-components";
 import { userSelector } from "../../redux/user.reducer";
+import { APP_IMG } from "../../utils/app.constants";
 import {auth, signInWithGoogle} from '../../utils/firebase.utils'
-import Logo from '../../assets/images/AppImg.png';
 import Notification from "../notification/notification.component";
 
 export default function Header(){
@@ -11,7 +11,7 @@ export default function Header(){
         <Container>
             <Row style={{width: "100%"}}>
                 <Col>
-                    <Image src={Logo} height={"120px"}/>
+                    <Image src={APP_IMG} height={"120px"}/>
                 </Col>
                 <Col>
                     <UserMenu/>

@@ -26,5 +26,5 @@ export const notificationSelector = (state)=>{
 
 export const showNotificationAsync = (content)=>(dispatch, getState)=>{
     dispatch(showNotification(content));
-    setTimeout(dispatch(hideNotification), 5000);
+    setTimeout(()=>{dispatch(hideNotification())}, 5000);
 }
