@@ -1,18 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export const NotificationTypes = {
+    Success: "success",
+    Error: "error",
+}
+const notificationDefaultState = {
+    isVisible: false, content: "", type: NotificationTypes.Success
+};
+
 const notificationSlice = createSlice({
     name:"NotficationSlice",
-    initialState:{
-        isVisible: false, content: ""
-    },
+    initialState: notificationDefaultState,
     reducers:{
         showNotification: (state, action)=>{
-            console.log("showing");
-            return {isVisible: true, content: action.payload};
+            const {content, type} = action.payload;
+            const newState = {isVisible: true, content: content};
+            if(type){
+                newState.type = type;
+            }
+            return newState;
         },
         hideNotification: (state)=>{
-            console.log("hiding");
-            return {isVisible: false, content: ""};
+            return notificationDefaultState;
         }
     }
 });
@@ -24,7 +33,7 @@ export const notificationSelector = (state)=>{
     return state.notification;
 }
 
-export const showNotificationAsync = (content)=>(dispatch, getState)=>{
-    dispatch(showNotification(content));
-    setTimeout(()=>{dispatch(hideNotification())}, 5000);
+export const showNotificationAsync = (content, type)=>(dispatch, getState)=>{
+    dispatch(showNotification({content, type}));
+    // setTimeout(()=>{dispatch(hideNotification())}, 5000);
 }

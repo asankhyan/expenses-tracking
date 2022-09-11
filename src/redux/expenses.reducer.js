@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { parseISO, setHours, setMinutes, setSeconds } from "date-fns";
-import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { formatDate_ddMMyyyy } from "../utils/date.utils";
 import { fireStore } from "../utils/firebase.utils";
 import { showNotificationAsync } from "./notification.reducer";
+import { hideProgressBar, showProgressBar } from "./progress.reducer";
 import { getUserEmail } from "./user.reducer";
 
-const expenseDefaults = {id: null, date: new Date(), amount:"", remarks:"", tags:[]};
+const expenseDefaults = {category:"", id: null, date: new Date(), amount:"", remarks:"", tags:[]};
 
 export const expenseSlice = createSlice({
     name: "Expenses",
@@ -25,7 +26,9 @@ export const expenseSlice = createSlice({
             return state;
         },
         setExpenseDetails:(state, action)=>{
-            return {...state, selectedExpense: {...state.selectedExpense, ...action.payload}};
+            let selectedExpense = {...state.selectedExpense, ...action.payload};
+            console.log(selectedExpense);
+            return {...state, selectedExpense};
         },
         setExpenses:(state, action)=>{
             return {...state, list: action.payload};
@@ -63,6 +66,7 @@ export const setExpenseDefaultsAsync = (dispatch)=>{
 
 export const saveExpenseAsync = (expense)=>{
     return (dispatch, getState)=>{
+        dispatch(showProgressBar());
         let msg = ""
         let newDate = parseISO(expense.date);
         if(expense.id != null && expense.id != undefined){
@@ -92,10 +96,12 @@ export const saveExpenseAsync = (expense)=>{
             });
         }
         dispatch(setExpenseDefaultsAsync);
+        dispatch(hideProgressBar());
     }
 }
 
 export const editExpenseAsync  = (docId) => (dispatch, getState) => {
+    dispatch(showProgressBar());
     let docRef = getExpenseDocRef(getState(), docId);
     let _docPromise = getDoc(docRef);
     _docPromise.then(res=>{
@@ -109,11 +115,30 @@ export const editExpenseAsync  = (docId) => (dispatch, getState) => {
         dispatch(showNotificationAsync(err));
     }).finally(()=>{
         scrollTo(0, 0);
+        dispatch(hideProgressBar());
+    });
+};
+
+export const deleteExpenseAsync  = (docId) => (dispatch, getState) => {
+    dispatch(showProgressBar());
+    let docRef = getExpenseDocRef(getState(), docId);
+    let msg = "";
+    let _docPromise = deleteDoc(docRef);
+    _docPromise.then(res=>{
+        msg = "Record deleted successfully.";
+        console.log(res);
+        dispatch(getExpensesListAsync);
+    }).catch(err=>{
+        console.log(err);
+        msg = "Unable to delete record";
+    }).finally(()=>{
+        dispatch(showNotificationAsync(msg));
+        dispatch(hideProgressBar());
     });
 };
 
 export const getExpensesListAsync= (dispatch, getState)=>{
-    // const expensesCollectionPath = 
+    dispatch(showProgressBar());
     let userExpenses = getExpensesCollection(getState());
     let allDocsQuery = query(userExpenses, orderBy("date", "desc"));
     
@@ -135,7 +160,7 @@ export const getExpensesListAsync= (dispatch, getState)=>{
             return docArray.push(_expense);
         });
         dispatch(setExpenses(docArray));
-    }).catch(error=>console.log(error));
+    }).catch(error=>console.log(error)).finally(()=>dispatch(hideProgressBar()));
 }
 
 export const {addExpense, setExpenseDetails, setExpenses, setExpensesRange} = expenseSlice.actions;

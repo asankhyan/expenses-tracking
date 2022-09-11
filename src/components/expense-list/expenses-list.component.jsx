@@ -1,12 +1,13 @@
 import { useEffect } from "react";
-import { Card, Toast } from "react-bootstrap";
+import { Alert, Button, Card, Modal, ModalBody, ModalHeader, Toast } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { editExpenseAsync, expensesRange, getExpensesListAsync, selectExpenses, totalExpense } from "../../redux/expenses.reducer";
+import { deleteExpenseAsync, editExpenseAsync, expensesRange, getExpensesListAsync, selectExpenses, totalExpense } from "../../redux/expenses.reducer";
 import { userSelector } from "../../redux/user.reducer";
 import { formatDate_ddMMyyyy } from "../../utils/date.utils";
 import Tags from "../tags/tags.component";
 import ExpensesFilter from "./expenses-filter.component";
 import {AiOutlineEdit, AiOutlineDelete} from 'react-icons/ai'
+import { useState } from "react";
 
 export default function ExpensesList(){
     const expensesList = useSelector(selectExpenses);
@@ -14,10 +15,44 @@ export default function ExpensesList(){
     const totalExpenses = useSelector(totalExpense);
     const _expensesRange = useSelector(expensesRange);
     const dispatch = useDispatch();
+
+    const [selectedItem, setSelectedItem] = useState(null);
+
     useEffect(()=>{
         if(user && user.email)
             dispatch(getExpensesListAsync);
     }, [user, dispatch]);
+
+    const editExpense = (expId)=>{
+        dispatch(editExpenseAsync(expId));
+    } 
+
+    const deleteExpense = (expId)=>{
+        setSelectedItem(expId);
+    }
+    
+    const showDeletePropmt = (itemId)=>{
+        const cancelAction = ()=>{
+            setSelectedItem(null);
+        }
+        return(
+            <Modal show={itemId} onHide={cancelAction}>
+                <ModalHeader closeButton>
+                    <strong className="me-auto">Confirmation</strong>
+                </ModalHeader>
+                <ModalBody>
+                    <Alert variant="danger">
+                        Are you sure you want to delete this record.
+                    </Alert>
+                    <div style={{display:"flex", justifyContent: "end", gap:"20px"}}>
+                        <Button onClick={()=>{dispatch(deleteExpenseAsync(itemId)); cancelAction();}}>Yes</Button>
+                        <Button onClick={cancelAction}>Cancel</Button>
+                    </div>
+                </ModalBody>
+            </Modal>
+        );
+    }
+
     return(
         <Card>
             <Card.Header>
@@ -31,6 +66,9 @@ export default function ExpensesList(){
                 <ExpensesFilter/>
             </Card.Header>
             <Card.Body style={{maxHeight: "450px", overflow: "auto"}}>
+                {
+                    selectedItem && showDeletePropmt(selectedItem)
+                }
                 {
                 expensesList && expensesList.length>0
                 ?<>
@@ -57,8 +95,8 @@ export default function ExpensesList(){
                                     justifyContent: "space-between",
                                     borderRadius: "5px"
                                 }}>
-                                    <AiOutlineEdit style={{cursor: "pointer"}} onClick={()=>{dispatch(editExpenseAsync(item.id))}}/>
-                                    <AiOutlineDelete style={{cursor: "pointer"}} onClick={()=>{console.log("delete clicked", item.id)}}/>
+                                    <AiOutlineEdit style={{cursor: "pointer"}} onClick={()=>{editExpense(item.id)}}/>
+                                    <AiOutlineDelete style={{cursor: "pointer"}} onClick={()=>{deleteExpense(item.id)}}/>
                                 </div>
                             </Toast.Header>
                             <Toast.Body>

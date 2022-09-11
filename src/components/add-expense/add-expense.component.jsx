@@ -5,8 +5,10 @@ import FormInput from "../form-fields/input.component";
 import MultiValueText from "../form-fields/multi-value-text.component";
 import { saveExpenseAsync, getSelectedExpense, setExpenseDefaultsAsync, setExpenseDetails, isEditMode } from '../../redux/expenses.reducer'
 import { formatDateISO } from "../../utils/date.utils";
-import { Card, Form } from "react-bootstrap";
+import { Card, Col, Form, Row } from "react-bootstrap";
 import { showNotificationAsync } from "../../redux/notification.reducer";
+import Select from "../form-fields/select.component";
+import { ExpenseCategories } from "../../utils/app.constants";
 
 export default function AddExpense(){
     let expense = useSelector(getSelectedExpense);
@@ -16,6 +18,7 @@ export default function AddExpense(){
     let updateExpenseDetails = (evt, val)=>{
         const {target} = evt;
         const value = val || target.value;
+        console.log(target.name, value);
         dispatch(setExpenseDetails({[target.name]: value}));
     }
     let setDate = (val)=>{
@@ -56,11 +59,18 @@ export default function AddExpense(){
         <Card>
             <Card.Body>
                 <Form>
-                    <Datepicker selected={expense.date} onChange={setDate} maxDate={new Date()}/>
-                    <FormInput name="amount" type={"number"} label={"Amount"} value={expense.amount} onChange={updateExpenseDetails}/>
+                    <Datepicker label={"Expense Date"} selected={expense.date} onChange={setDate} maxDate={new Date()}/>
+                    <Row className="md-6">
+                        <Col>
+                            <FormInput name="amount" type={"number"} label={"Amount"} value={expense.amount} onChange={updateExpenseDetails}/>
+                        </Col>
+                        <Col>
+                            <Select name="category" label={"Category"} onChange={updateExpenseDetails} value={expense.category} options={ExpenseCategories}/>
+                        </Col>
+                    </Row>
                     <FormInput as={"textarea"} name="remarks" type={"text"} label={"Remarks"} value={expense.remarks}  onChange={updateExpenseDetails}/>
                     <MultiValueText name="tags" type={"text"} label={"Tags"} value={expense.tags}  onChange={setTagsList}/>
-                    <div style={{display: "flex", width: "100%", justifyContent: "space-evenly"}}>
+                    <div style={{display: "flex", width: "100%", justifyContent: "end", gap:"20px"}}>
                         <FormButton onClick={saveExpenseDetails}>{editMode?"Update Expense":"Add Expense"}</FormButton>
                         <FormButton onClick={()=>dispatch(setExpenseDefaultsAsync)}>{editMode?"Cancel":"Reset"}</FormButton>
                     </div>
