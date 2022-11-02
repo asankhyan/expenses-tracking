@@ -45,8 +45,8 @@ export default function ExpensesList(){
                         Are you sure you want to delete this record.
                     </Alert>
                     <div style={{display:"flex", justifyContent: "end", gap:"20px"}}>
-                        <Button onClick={()=>{dispatch(deleteExpenseAsync(itemId)); cancelAction();}}>Yes</Button>
-                        <Button onClick={cancelAction}>Cancel</Button>
+                        <Button className='btn btn_common' onClick={()=>{dispatch(deleteExpenseAsync(itemId)); cancelAction();}}>Yes</Button>
+                        <Button className='btn btn_common' onClick={cancelAction}>Cancel</Button>
                     </div>
                 </ModalBody>
             </Modal>
