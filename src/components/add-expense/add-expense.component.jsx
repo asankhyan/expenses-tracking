@@ -56,7 +56,7 @@ export default function AddExpense(){
         return true;
     }
     return(
-        <Card>
+        <Card className="shadow">
             <Card.Body>
                 <Form>
                     <Datepicker label={"Expense Date"} selected={expense.date} onChange={setDate} maxDate={new Date()}/>
@@ -71,8 +71,8 @@ export default function AddExpense(){
                     <FormInput as={"textarea"} name="remarks" type={"text"} label={"Remarks"} value={expense.remarks}  onChange={updateExpenseDetails}/>
                     <MultiValueText name="tags" type={"text"} label={"Tags"} value={expense.tags}  onChange={setTagsList}/>
                     <div style={{display: "flex", width: "100%", justifyContent: "end", gap:"20px"}}>
-                        <FormButton onClick={saveExpenseDetails}>{editMode?"Update Expense":"Add Expense"}</FormButton>
-                        <FormButton onClick={()=>dispatch(setExpenseDefaultsAsync)}>{editMode?"Cancel":"Reset"}</FormButton>
+                        <FormButton className='btn btn_common' onClick={saveExpenseDetails}>{editMode?"Update Expense":"Add Expense"}</FormButton>
+                        <FormButton className='btn btn_common' onClick={()=>dispatch(setExpenseDefaultsAsync)}>{editMode?"Cancel":"Reset"}</FormButton>
                     </div>
                 </Form>
             </Card.Body>

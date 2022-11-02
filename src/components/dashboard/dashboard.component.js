@@ -59,12 +59,17 @@ function UserContent(){
         );
     } else{
         return(
-            <Card style={{width:"100%", maxWidth: "500px", margin:"50px auto"}}>
-                <Card.Img variant="top" src={APP_IMG}/>
-                <Card.Body style={{textAlign: "center"}}>
-                    <Button onClick={signInWithGoogle}>Sign In with Google</Button>
-                </Card.Body>
-            </Card>
+            <div className='bg_wall'>
+                <Card className='shadow' style={{width:"100%", maxWidth: "500px", margin:"50px auto", border: 0 }}>                  
+                    <Card.Body style={{textAlign: "center"}}>
+                        <Card.Img variant="top" src={APP_IMG} className='img-fluid' />
+
+                        <h6 className='py-4'> An application to track your earning & daily expenses </h6>
+
+                        <Button className='btn btn_common' onClick={signInWithGoogle}>Sign In with Google</Button>
+                    </Card.Body>
+                </Card>
+            </div>
         );
     }
   }

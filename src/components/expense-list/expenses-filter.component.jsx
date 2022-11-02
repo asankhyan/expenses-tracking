@@ -1,7 +1,7 @@
 import Datepicker from "../form-fields/datepicker.component";
 import { expensesRange, getExpensesListAsync, setExpensesRange} from "../../redux/expenses.reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import FormButton from "../form-fields/button.component";
 import { useState } from "react";
 
@@ -26,6 +26,7 @@ export default function ExpensesFilter(){
     };
     return(
         <div>
+        <Container>
             <Row>
                 <Col className="md-3">
                     <div>
@@ -52,9 +53,10 @@ export default function ExpensesFilter(){
                     />
                 </Col>
                 <Col style={{margin:"auto"}}>
-                    <FormButton onClick={applyFilter}>Apply Filter</FormButton>
+                    <FormButton className='btn btn_common' onClick={applyFilter}>Apply Filter</FormButton>
                 </Col>
             </Row>
+            </Container>
         </div>
     );
 }

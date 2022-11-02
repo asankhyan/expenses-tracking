@@ -9,7 +9,7 @@ export default function ExpensesReport(){
     return(
         expensesList && expensesList.length>0
         ?<>
-            <ResponsiveContainer width={"90%"} height={450} >
+            <ResponsiveContainer width={"100%"} height={450} >
                 <BarChart data={expensesList}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey={"date"}/>
