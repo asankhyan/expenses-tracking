@@ -1,3 +1,12 @@
+:root {
+  --text-light-blue: #00b8de;
+  --text-dark-blue: #002e6e; 
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,15 +16,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.progress-modal .modal-content{
+  background-color: #f8f8ffa8;
+  /* background-color: transparent; */
+  border: 0;
 }
 
-.row{
-  margin: 0px;
+
+
+
+.bg_wall {
+  background-image: url('./../../assets/images/bg_expense.jpg');
+  height: 768px;
+  padding: 1rem;
+  display: flex;
 }
-.progress-modal .modal-content{
-  background-color: transparent;
+.btn_common {
+  background: linear-gradient(45deg, #002e6e, #00b8de);
   border: 0;
+}
+
+.card {
+  border: 0;
+}
+label {
+  color: #00548d;
+  font-weight: 500;
 }
