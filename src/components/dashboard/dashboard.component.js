@@ -48,12 +48,12 @@ function UserContent(){
                     <AddExpense/>
                 </Col>
                 <Col>
-                    <ExpensesReport/>
+                    <ExpensesList as={Col}/>
                 </Col>
                 </Row>
                 <hr/>
                 <Row style={{display: "flex", justifyContent: "space-around", width:"95%", margin:"auto"}}>
-                    <ExpensesList as={Col}/>
+                    <ExpensesReport/>
                 </Row>
             </Container>
         );
